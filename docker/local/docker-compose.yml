@@ -1,0 +1,30 @@
+version: '3'
+services:
+  nginx:
+    container_name: nightclub_nginx
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ../../src:/var/www
+    restart: on-failure
+    links:
+      - app
+
+  app:
+    container_name: nightclub_app
+    build:
+      context: ./app
+    volumes:
+      - ../../src:/var/www
+    restart: on-failure
+
+  composerupdator:
+    container_name: nightclub_composerupdator
+    build:
+      context: ./app
+    restart: 'no'
+    command: 'composer install'
+    volumes:
+      - ../../src:/var/www
