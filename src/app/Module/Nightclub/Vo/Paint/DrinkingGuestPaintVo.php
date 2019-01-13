@@ -43,12 +43,12 @@ class DrinkingGuestPaintVo extends BasePaintVo
     }
 
     /**
-     * @param int $rowId
+     * @param int $rowKey
      *
      * @return string
      */
-    public function getGuestPaintRowList(int $rowId): string
+    public function getRowByKey(int $rowKey): string
     {
-        return $this->guestPaintRowList[$rowId] ?? '';
+        return $this->guestPaintRowList[$rowKey] ?? '';
     }
 }

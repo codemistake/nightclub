@@ -30,7 +30,7 @@ class BarPaintVo extends BasePaintVo
                 $rowContent = '';
                 /** @var DancingGuestPaintVo $guestPaint */
                 foreach ($guestPaintChunk as $guestPaint) {
-                    $rowContent .= $guestPaint->getGuestPaintRowList($rowIndex);
+                    $rowContent .= $guestPaint->getRowByKey($rowIndex);
                 }
                 $preparedRowList[] = $rowContent;
                 $rowLength = \mb_strlen($rowContent);

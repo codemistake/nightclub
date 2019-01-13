@@ -29,7 +29,7 @@ class DanceFloorPaintVo extends BasePaintVo
                 $rowContent = '';
                 /** @var DancingGuestPaintVo $guestPaint */
                 foreach ($guestPaintChunk as $guestPaint) {
-                    $rowContent .= $guestPaint->getGuestPaintRowList($rowIndex);
+                    $rowContent .= $guestPaint->getRowByKey($rowIndex);
                 }
                 $preparedRowList[] = $rowContent;
             }

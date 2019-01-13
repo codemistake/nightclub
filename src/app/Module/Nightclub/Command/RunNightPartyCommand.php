@@ -30,7 +30,7 @@ class RunNightPartyCommand extends BaseCommand
 {
     private const WELCOME_MESSAGE_DURATION = 1;
     private const ONE_FRAME_DURATION = 0.7;
-    private const MINIMUN_TRACK_DURATION = 3;
+    private const MINIMUM_TRACK_DURATION = 3;
     private const MAXIMUM_TRACK_DURATION = 10;
     private const GUEST_IN_ROW = 6;
     private const MIN_BORDER_BOW_WIDTH = 30;
@@ -117,7 +117,7 @@ class RunNightPartyCommand extends BaseCommand
             $trackList[] = new TrackVo([
                 'author' => $faker->musicDanceArtist(),
                 'name' => $faker->musicDanceAlbum(),
-                'duration' => random_int(self::MINIMUN_TRACK_DURATION, self::MAXIMUM_TRACK_DURATION),
+                'duration' => random_int(self::MINIMUM_TRACK_DURATION, self::MAXIMUM_TRACK_DURATION),
                 'genre' => Base::randomElement($acceptedGenreInClub),
             ]);
         }
@@ -133,7 +133,7 @@ class RunNightPartyCommand extends BaseCommand
             $guestList[] = new GuestVo([
                 'firstName' => $faker->firstName($gender),
                 'lastName' => $lastName,
-                'danceGenreNameList' => Base::randomElements(
+                'danceGenreList' => Base::randomElements(
                     $genreList,
                     random_int(1, 3)
                 ),
@@ -166,10 +166,9 @@ class RunNightPartyCommand extends BaseCommand
                 system('clear');
 
                 $currentTrackTimeInMinutes = gmdate('i:s', $i);
-                $compositionTimeTracking = "[{$currentTrackTimeInMinutes} / {$totalTrackTimeInMinutes}]";
                 $this->info(
                     BorderedBoxPaintVo::withRowList([
-                        "{$trackVo->getAuthor()} - {$trackVo->getName()} {$compositionTimeTracking}",
+                        "{$trackVo->getCompositionName()} [{$currentTrackTimeInMinutes} / {$totalTrackTimeInMinutes}]",
                         "♪ Жанр: {$trackVo->getGenre()->getName()}",
                     ])
                 );

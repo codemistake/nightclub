@@ -16,7 +16,7 @@ class GuestVo extends SimpleDto
     /** @var string */
     private $lastName;
     /** @var \App\Module\Nightclub\Vo\Genre\GenreVo[] */
-    private $danceGenreNameList = [];
+    private $danceGenreList = [];
 
     /**
      * @return string
@@ -39,6 +39,6 @@ class GuestVo extends SimpleDto
      */
     public function getDancingGenreList(): array
     {
-        return $this->danceGenreNameList;
+        return $this->danceGenreList;
     }
 }

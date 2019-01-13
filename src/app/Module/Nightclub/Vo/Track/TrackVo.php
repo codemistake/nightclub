@@ -51,4 +51,12 @@ class TrackVo extends SimpleDto
     {
         return $this->genre;
     }
+
+    /**
+     * @return string
+     */
+    public function getCompositionName(): string
+    {
+        return "{$this->getAuthor()} - {$this->getName()}";
+    }
 }
