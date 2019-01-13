@@ -34,7 +34,7 @@ class RunNightPartyCommand extends BaseCommand
     private const MAXIMUM_TRACK_DURATION = 10;
     private const GUEST_IN_ROW = 6;
     private const MIN_BORDER_BOW_WIDTH = 30;
-    private const SIGNATURE = 'nightclub:init {--guests=5} {--tracks=5}';
+    private const SIGNATURE = 'nightclub:show {--guests=5} {--tracks=5}';
 
     /**
      * The name and signature of the console command.
