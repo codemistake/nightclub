@@ -2,7 +2,11 @@
 
 namespace App\Module\Nightclub\Vo\Paint;
 
-class BorderedBoxVo extends BasePaintVo
+/**
+ * Class BorderedBoxPaintVo
+ * @package App\Module\Nightclub\Vo\Paint
+ */
+class BorderedBoxPaintVo extends BasePaintVo
 {
     private const HORIZONTAL_LINE_SYMBOL = '─';
     private const VERTICAL_LINE_SYMBOL = '│';
@@ -13,6 +17,8 @@ class BorderedBoxVo extends BasePaintVo
     private const MINIMUM_BLOCK_WIDTH = 70;
 
     /**
+     * BorderedBoxPaintVo constructor.
+     *
      * @param string $content
      * @param int $horizontalPadding
      * @param int $verticalPadding
@@ -69,13 +75,13 @@ class BorderedBoxVo extends BasePaintVo
      * @param int $horizontalPadding
      * @param int $verticalPadding
      *
-     * @return BorderedBoxVo
+     * @return BorderedBoxPaintVo
      */
     public static function withStringContent(
         string $content,
         int $horizontalPadding = 30,
         int $verticalPadding = 1
-    ): BorderedBoxVo {
+    ): BorderedBoxPaintVo {
         return new self($content, $horizontalPadding, $verticalPadding);
     }
 
@@ -84,7 +90,7 @@ class BorderedBoxVo extends BasePaintVo
      * @param int $horizontalPadding
      * @param int $verticalPadding
      *
-     * @return BorderedBoxVo
+     * @return BorderedBoxPaintVo
      */
     public static function withRowList(
         array $rowList,

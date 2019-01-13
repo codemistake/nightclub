@@ -2,7 +2,7 @@
 
 namespace App\Module\Nightclub\Vo\Paint;
 
-use App\Module\Nightclub\Vo\GuestVo;
+use App\Module\Nightclub\Vo\Guest\GuestVo;
 
 /**
  * Class DrinkingGuestPaintVo

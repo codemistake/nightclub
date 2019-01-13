@@ -4,7 +4,7 @@ namespace App\Module\Nightclub\Vo\Paint;
 
 use App\Module\Nightclub\Vo\BodyAction\BodyVo;
 use App\Module\Nightclub\Vo\BodyAction\HeadVo;
-use App\Module\Nightclub\Vo\GuestVo;
+use App\Module\Nightclub\Vo\Guest\GuestVo;
 
 /**
  * Class DancingGuestPaintVo

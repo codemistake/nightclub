@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Module\Nightclub\Vo;
+namespace App\Module\Nightclub\Vo\Track;
 
+use App\Module\Nightclub\Vo\Genre\GenreVo;
 use SimpleDto\SimpleDto;
 
 /**
  * Class TrackVo
- * @package App\Module\Nightclub\Vo
+ * @package App\Module\Nightclub\Vo\Track
  */
 class TrackVo extends SimpleDto
 {
@@ -16,8 +17,8 @@ class TrackVo extends SimpleDto
     private $name;
     /** @var int */
     private $duration;
-    /** @var string */
-    private $genreName;
+    /** @var \App\Module\Nightclub\Vo\Genre\GenreVo */
+    private $genre;
 
     /**
      * @return string
@@ -44,10 +45,10 @@ class TrackVo extends SimpleDto
     }
 
     /**
-     * @return string
+     * @return GenreVo
      */
-    public function getGenreName(): string
+    public function getGenre(): GenreVo
     {
-        return $this->genreName;
+        return $this->genre;
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Module\Nightclub\GuestResolver;
+namespace App\Module\Nightclub\Vo\GuestResolver;
 
 use App\Module\Nightclub\Vo\Dance\DanceStyleVo;
-use App\Module\Nightclub\Vo\GuestVo;
+use App\Module\Nightclub\Vo\Guest\GuestVo;
 
 /**
- * Class GuestResolver
- * @package App\Module\Nightclub\GuestResolver
+ * Class GuestResolverVo
+ * @package App\Module\Nightclub\Vo\GuestResolver
  */
-class GuestResolver
+class GuestResolverVo
 {
     /** @var GuestVo[] */
     private $dancingGuestList;
@@ -17,7 +17,7 @@ class GuestResolver
     private $drinkingGuestList;
 
     /**
-     * GuestResolver constructor.
+     * GuestResolverVo constructor.
      *
      * @param array $guestList
      * @param DanceStyleVo $danceStyleVo
@@ -43,7 +43,7 @@ class GuestResolver
     }
 
     /**
-     * @param GuestVo $guestVo
+     * @param \App\Module\Nightclub\Vo\Guest\GuestVo $guestVo
      * @param DanceStyleVo $danceStyleVo
      *
      * @return bool

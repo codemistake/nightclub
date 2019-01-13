@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Module\Nightclub\Vo;
+namespace App\Module\Nightclub\Vo\Guest;
 
 use App\Module\Nightclub\Vo\Genre\GenreVo;
 use SimpleDto\SimpleDto;

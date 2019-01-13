@@ -3,7 +3,6 @@
 namespace App\Module\Nightclub\Command;
 
 use App\Core\Command\BaseCommand;
-use App\Module\Nightclub\GuestResolver\GuestResolver;
 use App\Module\Nightclub\Vo\BodyAction\BodyVo;
 use App\Module\Nightclub\Vo\BodyAction\HandVo;
 use App\Module\Nightclub\Vo\BodyAction\HeadVo;
@@ -11,13 +10,15 @@ use App\Module\Nightclub\Vo\BodyAction\LegVo;
 use App\Module\Nightclub\Vo\Dance\DanceStyleCollection;
 use App\Module\Nightclub\Vo\Dance\DanceStyleVo;
 use App\Module\Nightclub\Vo\Genre\GenreVo;
-use App\Module\Nightclub\Vo\GuestVo;
+use App\Module\Nightclub\Vo\Guest\GuestVo;
+use App\Module\Nightclub\Vo\GuestResolver\GuestResolverVo;
 use App\Module\Nightclub\Vo\Paint\BarPaintVo;
-use App\Module\Nightclub\Vo\Paint\BorderedBoxVo;
+use App\Module\Nightclub\Vo\Paint\BorderedBoxPaintVo;
 use App\Module\Nightclub\Vo\Paint\DanceFloorPaintVo;
 use App\Module\Nightclub\Vo\Paint\DancingGuestPaintVo;
+use App\Module\Nightclub\Vo\Paint\DebugDataPaintVo;
 use App\Module\Nightclub\Vo\Paint\DrinkingGuestPaintVo;
-use App\Module\Nightclub\Vo\TrackVo;
+use App\Module\Nightclub\Vo\Track\TrackVo;
 use Faker\Provider\Base;
 use Faker\Provider\Person;
 
@@ -27,11 +28,11 @@ use Faker\Provider\Person;
  */
 class RunNightPartyCommand extends BaseCommand
 {
-    private const WELCOME_MESSAGE_DURATION = 5;
-    private const ONE_FRAME_DURATION = 0.6;
+    private const WELCOME_MESSAGE_DURATION = 1;
+    private const ONE_FRAME_DURATION = 0.3;
     private const GUEST_IN_ROW = 6;
     private const MIN_BORDER_BOW_WIDTH = 30;
-    private const SIGNATURE = 'nightclub:init {guests=5} {tracks=5}';
+    private const SIGNATURE = 'nightclub:init {--guests=5} {--tracks=5}';
 
     /**
      * The name and signature of the console command.
@@ -108,22 +109,19 @@ class RunNightPartyCommand extends BaseCommand
         ];
 
         $trackList = [];
-        $numberOfTracks = (int)$this->argument('tracks');
+        $numberOfTracks = (int)$this->option('tracks');
         for ($i = 0; $i < $numberOfTracks; $i++) {
-            /** @var GenreVo $genreName */
-            $genreName = Base::randomElement($acceptedGenreInClub);
-
             /** @var $faker \RauweBieten\PhpFakerMusic\Dance */
             $trackList[] = new TrackVo([
                 'author' => $faker->musicDanceArtist(),
                 'name' => $faker->musicDanceAlbum(),
                 'duration' => random_int(4, 18),
-                'genreName' => $genreName->getName(),
+                'genre' => Base::randomElement($acceptedGenreInClub),
             ]);
         }
 
         $guestList = [];
-        $numberOfGuests = (int)$this->argument('guests');
+        $numberOfGuests = (int)$this->option('guests');
         for ($i = 0; $i < $numberOfGuests; $i++) {
             $gender = random_int(0, 1) === 1 ? Person::GENDER_MALE : Person::GENDER_FEMALE;
             $lastName = $faker->lastName;
@@ -144,26 +142,19 @@ class RunNightPartyCommand extends BaseCommand
             Добро пожаловать на вечеринку!
             Треков: ' . \count($trackList) . ' ♪
             Посетителей: ' . \count($guestList);
-        $this->showBlinkingScreen(
-            $welcomeMessage,
-            self::WELCOME_MESSAGE_DURATION
-        );
+        $this->showBlinkingScreen($welcomeMessage, self::WELCOME_MESSAGE_DURATION);
 
-        /** @var TrackVo $trackVo */
+        $emptyDrinkBottles = 0;
+        /** @var \App\Module\Nightclub\Vo\Track\TrackVo $trackVo */
         foreach ($trackList as $trackVo) {
             $totalTrackTimeInMinutes = gmdate('i:s', $trackVo->getDuration());
 
-            $genreName = $trackVo->getGenreName();
-            if ($genreName === null) {
-                throw new \LogicException("Track doesn't have a genre");
-            }
-
-            $danceStyle = $danceStyleCollection->getByName($genreName);
+            $danceStyle = $danceStyleCollection->getByName($trackVo->getGenre()->getName());
             if ($danceStyle === null) {
-                throw new \LogicException("Dance style for genre {$genreName} not found");
+                throw new \LogicException("Dance style for genre {$trackVo->getGenre()->getName()} not found");
             }
 
-            $guestResolver = new GuestResolver(
+            $guestResolver = new GuestResolverVo(
                 $guestList,
                 $danceStyle
             );
@@ -175,15 +166,15 @@ class RunNightPartyCommand extends BaseCommand
                 $currentTrackTimeInMinutes = gmdate('i:s', $i);
                 $compositionTimeTracking = "[{$currentTrackTimeInMinutes} / {$totalTrackTimeInMinutes}]";
                 $this->info(
-                    BorderedBoxVo::withRowList([
+                    BorderedBoxPaintVo::withRowList([
                         "{$trackVo->getAuthor()} - {$trackVo->getName()} {$compositionTimeTracking}",
-                        "♪ Жанр: {$trackVo->getGenreName()}",
+                        "♪ Жанр: {$trackVo->getGenre()->getName()}",
                     ])
                 );
 
-                $danceAction = $danceStyleCollection->getByName($genreName);
+                $danceAction = $danceStyleCollection->getByName($trackVo->getGenre()->getName());
                 if ($danceAction === null) {
-                    throw new \LogicException("Dance style for genre {$genreName} not found");
+                    throw new \LogicException("Dance style for genre {$trackVo->getGenre()->getName()} not found");
                 }
 
                 $headAction = Base::randomElement($danceAction->getHeadAction()->getActionList());
@@ -204,8 +195,8 @@ class RunNightPartyCommand extends BaseCommand
                     );
                 }
                 $this->info(
-                    BorderedBoxVo::withStringContent(
-                        new DanceFloorPaintVo($dancingGuestPaintList, 5),
+                    BorderedBoxPaintVo::withStringContent(
+                        new DanceFloorPaintVo($dancingGuestPaintList, self::GUEST_IN_ROW),
                         self::MIN_BORDER_BOW_WIDTH
                     )
                 );
@@ -213,49 +204,43 @@ class RunNightPartyCommand extends BaseCommand
                 $drinkingGuestPaintList = [];
                 $guestsWannaDrink = $i % 3 === 0;
                 foreach ($guestResolver->getDrinkingGuestList() as $guest) {
+                    if ($guestsWannaDrink) {
+                        $emptyDrinkBottles++;
+                    }
                     $drinkingGuestPaintList[] = new DrinkingGuestPaintVo(
                         $guest,
                         $guestsWannaDrink
                     );
                 }
+
                 $this->info(
-                    BorderedBoxVo::withStringContent(
-                        new BarPaintVo($drinkingGuestPaintList, self::GUEST_IN_ROW)
+                    BorderedBoxPaintVo::withStringContent(
+                        new BarPaintVo(
+                            $drinkingGuestPaintList,
+                            self::GUEST_IN_ROW
+                        )
                     )
                 );
 
-
-                $debugDataList = [];
-                /** @var GuestVo $guestVo */
-                foreach ($guestList as $guestVo) {
-                    $genreNameList = [];
-                    foreach ($guestVo->getDancingGenreList() as $genreVo) {
-                        $genreNameList[] = $genreVo->getName();
-                    }
-
-                    $debugRow = "{$guestVo->getFirstName()} {$guestVo->getLastName()}: " . implode(',', $genreNameList);
-                    $debugDataList[] = $debugRow;
-                }
-
-                $debugDataList[] = ' ';
-                foreach ($danceStyleCollection->getList() as $danceStyleVo) {
-                    $acceptedGenreNameList = [];
-                    foreach ($danceStyleVo->getAcceptedGenreList() as $genreVo) {
-                        $acceptedGenreNameList[] = $genreVo->getName();
-                    }
-                    $debugDataList[] = "{$danceStyleVo->getName()}: " . implode(',', $acceptedGenreNameList);
-                }
-
                 $this->info(
-                    BorderedBoxVo::withRowList(
-                        $debugDataList,
+                    BorderedBoxPaintVo::withStringContent(
+                        new DebugDataPaintVo(
+                            $guestList,
+                            $danceStyleCollection->getList()
+                        ),
                         self::MIN_BORDER_BOW_WIDTH
                     )
                 );
             }
         }
 
-        $this->info('Done');
+        $endPartMessage = "
+            Вечеринка окончена, наступило утро!
+            Выпито бутылок водки: {$emptyDrinkBottles} шт.
+            
+            github.com/codemistake
+        ";
+        $this->showBlinkingScreen($endPartMessage, self::WELCOME_MESSAGE_DURATION);
     }
 
     /**
@@ -264,7 +249,7 @@ class RunNightPartyCommand extends BaseCommand
      */
     private function showBlinkingScreen(string $content, int $durationInSeconds): void
     {
-        $messageText = BorderedBoxVo::withStringContent($content, self::MIN_BORDER_BOW_WIDTH, 3);
+        $messageText = BorderedBoxPaintVo::withStringContent($content, self::MIN_BORDER_BOW_WIDTH, 3);
         for ($i = 0; $i < $durationInSeconds; $i++) {
             sleep(1);
             system('clear');
