@@ -46,6 +46,8 @@ class DancingGuestPaintVo extends BasePaintVo
             $leftHandAction,
             $rightHandAction,
         ];
+        $moveHeadLeft = false;
+        $moveHeadRight = false;
 
         $guestPaintRowList = self::DEFAULT_GUEST_STATE;
         foreach ($actionSetList as $actionSet) {
@@ -67,24 +69,25 @@ class DancingGuestPaintVo extends BasePaintVo
                     $currentRow === BodyVo::BODY_CENTER_ROW_INDEX &&
                     $rowAction === BodyVo::THROWS_FORWARD_STATE[1]
                 ) {
-                    $guestPaintRowList[HeadVo::HEAD_ROW_INDEX] = mb_substr(
-                            $guestPaintRowList[HeadVo::HEAD_ROW_INDEX],
-                            1
-                        ) . ' ';
+                    $moveHeadLeft = true;
                 }
 
                 if (
                     $currentRow === BodyVo::BODY_CENTER_ROW_INDEX &&
                     $rowAction === BodyVo::THROWS_BACK_STATE[1]
                 ) {
-                    $guestPaintRowList[HeadVo::HEAD_ROW_INDEX] = ' ' . mb_substr(
-                            $guestPaintRowList[HeadVo::HEAD_ROW_INDEX],
-                            0,
-                            -1
-                        );
+                    $moveHeadRight = true;
                 }
                 $currentRow++;
             }
+        }
+
+        $headRow = $guestPaintRowList[HeadVo::HEAD_ROW_INDEX];
+        if ($moveHeadLeft && mb_strpos($guestPaintRowList[HeadVo::HEAD_ROW_INDEX], ' ') === 0) {
+            $guestPaintRowList[HeadVo::HEAD_ROW_INDEX] = mb_substr($headRow, 1) . ' ';
+        }
+        if ($moveHeadRight && mb_substr($guestPaintRowList[HeadVo::HEAD_ROW_INDEX], -1) === ' ') {
+            $guestPaintRowList[HeadVo::HEAD_ROW_INDEX] = ' ' . mb_substr($headRow, 0, -1);
         }
 
         $guestPaintRowList[] = $guestVo->getFirstName();

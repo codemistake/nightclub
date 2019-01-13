@@ -39,8 +39,47 @@ class HeadVo extends SimpleDto
         return new self([
             'actionList' => [
                 self::DEFAULT_STATE,
-                self::THROWS_BACK_STATE,
                 self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::THROWS_BACK_STATE,
+                self::THROWS_FORWARD_STATE,
+            ],
+        ]);
+    }
+
+    /**
+     * @return HeadVo
+     *
+     * @throws \ReflectionException
+     */
+    public static function withActiveShaking(): HeadVo
+    {
+        return new self([
+            'actionList' => [
+                self::DEFAULT_STATE,
+                self::THROWS_BACK_STATE,
+                self::THROWS_FORWARD_STATE,
+            ],
+        ]);
+    }
+
+    /**
+     * @return HeadVo
+     *
+     * @throws \ReflectionException
+     */
+    public static function withRareShaking(): HeadVo
+    {
+        return new self([
+            'actionList' => [
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
+                self::THROWS_BACK_STATE,
                 self::THROWS_FORWARD_STATE,
             ],
         ]);

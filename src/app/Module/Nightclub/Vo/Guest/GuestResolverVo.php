@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Module\Nightclub\Vo\GuestResolver;
+namespace App\Module\Nightclub\Vo\Guest;
 
 use App\Module\Nightclub\Vo\Dance\DanceStyleVo;
-use App\Module\Nightclub\Vo\Guest\GuestVo;
 
 /**
  * Class GuestResolverVo
- * @package App\Module\Nightclub\Vo\GuestResolver
+ * @package App\Module\Nightclub\Vo\Guest
  */
 class GuestResolverVo
 {
@@ -43,7 +42,7 @@ class GuestResolverVo
     }
 
     /**
-     * @param \App\Module\Nightclub\Vo\Guest\GuestVo $guestVo
+     * @param GuestVo $guestVo
      * @param DanceStyleVo $danceStyleVo
      *
      * @return bool

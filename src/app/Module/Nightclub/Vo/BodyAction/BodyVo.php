@@ -38,9 +38,10 @@ class BodyVo extends SimpleDto
     {
         return new self([
             'actionList' => [
+                self::DEFAULT_STATE,
+                self::DEFAULT_STATE,
                 self::THROWS_BACK_STATE,
                 self::THROWS_FORWARD_STATE,
-                self::DEFAULT_STATE,
             ],
         ]);
     }

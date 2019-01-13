@@ -56,13 +56,9 @@ class HandVo extends SimpleDto
         return new self([
             'leftHandActionList' => [
                 self::LEFT_HAND_NEAR_BELT_STATE,
-                self::LEFT_HAND_NEAR_BELT_STATE,
-                self::LEFT_HAND_DEFAULT_STATE,
             ],
             'rightHandActionList' => [
-                self::RIGHT_HAND_DEFAULT_STATE,
                 self::RIGHT_HAND_NEAR_BELT_STATE,
-                self::RIGHT_HAND_DEFAULT_STATE,
             ],
         ]);
     }
@@ -81,9 +77,9 @@ class HandVo extends SimpleDto
                 self::LEFT_HAND_ON_TOP_STATE,
             ],
             'rightHandActionList' => [
+                self::RIGHT_HAND_DEFAULT_STATE,
                 self::RIGHT_HAND_NEAR_BELT_STATE,
                 self::RIGHT_HAND_ON_TOP_STATE,
-                self::LEFT_HAND_DEFAULT_STATE,
             ],
         ]);
     }
@@ -102,8 +98,10 @@ class HandVo extends SimpleDto
                 self::LEFT_HAND_NEAR_BELT_STATE,
                 self::LEFT_HAND_NEAR_BELT_STATE,
                 self::LEFT_HAND_ON_TOP_STATE,
+                self::LEFT_HAND_ON_TOP_STATE,
             ],
             'rightHandActionList' => [
+                self::RIGHT_HAND_DEFAULT_STATE,
                 self::RIGHT_HAND_NEAR_BELT_STATE,
                 self::RIGHT_HAND_NEAR_BELT_STATE,
                 self::RIGHT_HAND_NEAR_BELT_STATE,

@@ -10,8 +10,8 @@ use App\Module\Nightclub\Vo\BodyAction\LegVo;
 use App\Module\Nightclub\Vo\Dance\DanceStyleCollection;
 use App\Module\Nightclub\Vo\Dance\DanceStyleVo;
 use App\Module\Nightclub\Vo\Genre\GenreVo;
+use App\Module\Nightclub\Vo\Guest\GuestResolverVo;
 use App\Module\Nightclub\Vo\Guest\GuestVo;
-use App\Module\Nightclub\Vo\GuestResolver\GuestResolverVo;
 use App\Module\Nightclub\Vo\Paint\BarPaintVo;
 use App\Module\Nightclub\Vo\Paint\BorderedBoxPaintVo;
 use App\Module\Nightclub\Vo\Paint\DanceFloorPaintVo;
@@ -29,7 +29,9 @@ use Faker\Provider\Person;
 class RunNightPartyCommand extends BaseCommand
 {
     private const WELCOME_MESSAGE_DURATION = 1;
-    private const ONE_FRAME_DURATION = 0.3;
+    private const ONE_FRAME_DURATION = 0.7;
+    private const MINIMUN_TRACK_DURATION = 3;
+    private const MAXIMUM_TRACK_DURATION = 10;
     private const GUEST_IN_ROW = 6;
     private const MIN_BORDER_BOW_WIDTH = 30;
     private const SIGNATURE = 'nightclub:init {--guests=5} {--tracks=5}';
@@ -65,36 +67,36 @@ class RunNightPartyCommand extends BaseCommand
 
         $danceStyleCollection = new DanceStyleCollection([
             new DanceStyleVo([
-                'name' => $rnbGenre->getName(),
+                'name' => $hipHopGenre->getName(),
                 'acceptedGenreList' => [
-                    $rnbGenre,
                     $hipHopGenre,
+                    $rnbGenre,
                 ],
-                'headAction' => HeadVo::withPassiveStyle(),
-                'bodyAction' => BodyVo::withSlowBodyShaking(),
+                'headAction' => HeadVo::withActiveShaking(),
+                'bodyAction' => BodyVo::withActiveBodyShaking(),
                 'handAction' => HandVo::withBeltOriented(),
-                'legAction' => LegVo::withPassiveStyle(),
+                'legAction' => LegVo::withFlexStyle(),
             ]),
             new DanceStyleVo([
-                'name' => $electrohouseGenre->getName(),
+                'name' => $electrodanceGenre->getName(),
                 'acceptedGenreList' => [
-                    $electrohouseGenre,
                     $electrodanceGenre,
+                    $electrohouseGenre,
                     $houseGenre,
                 ],
                 'headAction' => HeadVo::withPassiveStyle(),
-                'bodyAction' => BodyVo::withSlowBodyShaking(),
-                'handAction' => HandVo::withBeltOriented(),
-                'legAction' => LegVo::withPassiveStyle(),
+                'bodyAction' => BodyVo::withActiveBodyShaking(),
+                'handAction' => HandVo::withSpinStyle(),
+                'legAction' => LegVo::withActiveStyle(),
             ]),
             new DanceStyleVo([
                 'name' => $popGenre->getName(),
                 'acceptedGenreList' => [
                     $popGenre,
                 ],
-                'headAction' => HeadVo::withPassiveStyle(),
+                'headAction' => HeadVo::withRareShaking(),
                 'bodyAction' => BodyVo::withActiveBodyShaking(),
-                'handAction' => HandVo::withBeltOriented(),
+                'handAction' => HandVo::withSpinStyle(),
                 'legAction' => LegVo::withPassiveStyle(),
             ]),
         ]);
@@ -103,8 +105,8 @@ class RunNightPartyCommand extends BaseCommand
         $faker->addProvider(new \RauweBieten\PhpFakerMusic\Dance($faker));
 
         $acceptedGenreInClub = [
-            $rnbGenre,
-            $electrohouseGenre,
+            $hipHopGenre,
+            $electrodanceGenre,
             $popGenre,
         ];
 
@@ -115,7 +117,7 @@ class RunNightPartyCommand extends BaseCommand
             $trackList[] = new TrackVo([
                 'author' => $faker->musicDanceArtist(),
                 'name' => $faker->musicDanceAlbum(),
-                'duration' => random_int(4, 18),
+                'duration' => random_int(self::MINIMUN_TRACK_DURATION, self::MAXIMUM_TRACK_DURATION),
                 'genre' => Base::randomElement($acceptedGenreInClub),
             ]);
         }
