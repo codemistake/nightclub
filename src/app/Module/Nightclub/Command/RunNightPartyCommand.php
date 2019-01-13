@@ -28,8 +28,8 @@ use Faker\Provider\Person;
  */
 class RunNightPartyCommand extends BaseCommand
 {
-    private const WELCOME_MESSAGE_DURATION = 1;
-    private const ONE_FRAME_DURATION = 0.7;
+    private const WELCOME_MESSAGE_DURATION = 5;
+    private const ONE_FRAME_DURATION = 0.6;
     private const MINIMUM_TRACK_DURATION = 3;
     private const MAXIMUM_TRACK_DURATION = 10;
     private const GUEST_IN_ROW = 6;

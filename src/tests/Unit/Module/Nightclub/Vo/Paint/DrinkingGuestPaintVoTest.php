@@ -31,7 +31,7 @@ class DrinkingGuestPaintVoTest extends TestCase
 
         $rightGuestPaintedImage = [
             '    0 \    ',
-            '    |      ',
+            '    | ‾    ',
             '    П \    ',
             $firstName,
             $secondName,

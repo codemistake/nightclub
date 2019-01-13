@@ -17,7 +17,7 @@ class DrinkingGuestPaintVo extends BasePaintVo
     ];
     private const DRINKING_VODKA_STATE = [
         ' 0 \ ',
-        ' |   ',
+        ' | ‾ ',
         ' П \ ',
     ];
     public const GUEST_BLOCK_HEIGHT = 5;
