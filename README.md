@@ -77,7 +77,7 @@
 ```
 $ cd nightclub/docker/local
 $ docker-compose up --build
-$ docker-exec -it nightclub_app bash
+$ docker exec -it nightclub_app bash
 ```
 
 ## Запуск скрипта 
